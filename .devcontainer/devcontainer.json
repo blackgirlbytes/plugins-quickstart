@@ -1,15 +1,23 @@
 // For format details, see https://aka.ms/devcontainer.json.
 {
 	"name": "ChatGPT Quickstart Plugins",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/python:0-3.11",
+	// Use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"context": "..",
+	"dockerFile": "../Dockerfile",	
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		5003
 	],
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip install -r requirements.txt",
-	"postAttachCommand": ".devcontainer/addcodespacename.sh && python main.py",
+	"portsAttributes": {
+		"5003": {
+			"onAutoForward": "notify",
+			"visibility": "public",
+		}
+	},
+	// Use 'remoteEnv' to override the server url in the openapi.yaml
+	"remoteEnv": {
+		"SERVER_URL": "https://${CODESPACE_NAME}-5003.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
+	  },
 	"customizations": {
 		"codespaces": {
 			"openFiles": [
